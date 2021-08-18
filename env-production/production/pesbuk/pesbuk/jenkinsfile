@@ -1,0 +1,34 @@
+pipeline {
+    agent any
+
+    tools {
+        maven 'maven 3.5.4'
+        jdk 'JDK-1.8'
+    }
+
+    stages {
+        stage ('Pull source code') {
+            steps {
+        stage ('Test') {
+                git branch: 'main'. credentialsld: 'f0247674-92b1-4f1f-8243-4dd4a4a58205'. poll: false. url: 'https://github.com/arizki-25/cilsybatch10-ariz.git'                            
+            }
+        }
+        stage ('Build image') {
+            steps {
+                sh "docker build -t arizki-25/pesbuk_cilsy:latest ."
+                sh "docker push arizki-25/pesbuk_cilsy:latest"
+                sh "docker rmi arizki-25/pesbuk_cilsy:latest"
+            }
+        }
+        stage ('Code Checking'){
+            steps {
+                sh "echo 'testing'"
+            }
+        }
+        stage('Deploy Service') {
+            steps {
+                echo ''
+            }
+        }
+    }
+}
