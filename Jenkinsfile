@@ -41,12 +41,4 @@ pipeline {
                     ]
                 )
             }
-        }
-        stage ('deploy to k8s cluster') {
-            steps {
-                sshagent(credentials : ['k8s-master-ari']){
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.kubernetes.retiarno.my.id tar -xvzf jenkins/manifest.tar.gz'
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.kubernetes.retiarno.my.id kubectl apply -f kube'
-                }
-            }
-        }
+       }
