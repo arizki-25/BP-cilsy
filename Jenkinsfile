@@ -1,4 +1,4 @@
-ipeline {
+Pipeline {
     agent any
     stages {
         stage ('build pesbuk') {
@@ -10,3 +10,5 @@ ipeline {
                 '''
             }
         }
+}
+}
