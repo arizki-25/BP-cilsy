@@ -8,7 +8,7 @@ RUN echo "\nclear_env = no" >> /etc/php/7.2/fpm/pool.d/www.conf
 COPY . /var/www/html/
 # Nginx config
 RUN rm /etc/nginx/sites-enabled/default
-ADD ./pesbuk.conf /etc/nginx/sites-available/
+ADD pesbuk.conf /etc/nginx/sites-available/
 RUN ln -s /etc/nginx/sites-available/pesbuk.conf /etc/nginx/sites-enabled/pesbuk.conf
 # Expose ports.
 EXPOSE 80
