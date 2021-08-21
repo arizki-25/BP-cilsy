@@ -24,7 +24,7 @@ stage ('change manifest file and send') {
             failOnError: true,
             publishers: [
                 sshPublisherDesc(
-                    configName: "kube-main",
+                    configName: "k8s-main",
                     transfers: [sshTransfer(sourceFiles: 'manifest.tar.gz', remoteDirectory: 'jenkins/')],
                     verbose: true
                 )
@@ -34,7 +34,7 @@ stage ('change manifest file and send') {
 }
 stage ('deploy to k8s cluster') {
             steps {
-                sshagent(credentials : ['k8s-master-farid']){
+                sshagent(credentials : ['k8s-main-arizki']){
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.lokaljuara.id tar -xvzf jenkins/manifest.tar.gz'
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.lokaljuara.id kubectl apply -f ./k8s/namespace/'
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.lokaljuara.id kubectl apply -f ./k8s/'
