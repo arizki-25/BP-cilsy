@@ -24,7 +24,7 @@ stage ('change manifest file and send') {
             failOnError: true,
             publishers: [
                 sshPublisherDesc(
-                    configName: "k8s-master",
+                    configName: "kube-main",
                     transfers: [sshTransfer(sourceFiles: 'manifest.tar.gz', remoteDirectory: 'jenkins/')],
                     verbose: true
                 )
