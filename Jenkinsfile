@@ -32,3 +32,15 @@ stage ('change manifest file and send') {
         )
     }
 }
+stage ('deploy to k8s cluster') {
+            steps {
+                sshagent(credentials : ['k8s-master-farid']){
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.lokaljuara.id tar -xvzf jenkins/manifest.tar.gz'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.lokaljuara.id kubectl apply -f ./k8s/namespace/'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.lokaljuara.id kubectl apply -f ./k8s/'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.lokaljuara.id kubectl apply -f ./k8s/ingress/'
+                }
+            }
+        }
+    }
+}
