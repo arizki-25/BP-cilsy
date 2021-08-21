@@ -10,5 +10,25 @@ pipeline {
                 '''
             }
         }
+    }
 }
-}
+tage ('change manifest file and send') {
+            steps {
+                sh '''
+                    sed -i -e "s/branch/$GIT_BRANCH/" kube/pesbuk-deployment.yml
+                    sed -i -e "s/appversion/$BUILD_ID/" pesbuk/pesbuk-deployment.yml
+                    tar -czvf manifest.tar.gz kube/*
+                '''
+                sshPublisher(
+                    continueOnError: false, 
+                    failOnError: true,
+                    publishers: [
+                        sshPublisherDesc(
+                            configName: "k8s-master",
+                            transfers: [sshTransfer(sourceFiles: 'manifest.tar.gz', remoteDirectory: 'jenkins/')],
+                            verbose: true
+                        )
+                    ]
+                )
+            }
+        }

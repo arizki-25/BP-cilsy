@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pesbuk
-  namespace: production
+    namespace: production
 spec:
   replicas: 1
   selector:
@@ -17,30 +17,10 @@ spec:
     spec:
       containers:
       - name: pesbuk
-        image: arizki/sosmed:1
+        imagePullPolice: Always
+        image: arizki/sosmed:branch-appversion
         ports:
-        - containerPort: 80
-        env:
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: secretpesbuk
-                  key: DB_USER
-            - name: DB_PASS
-              valueFrom:
-                secretKeyRef:
-                  name: secretpesbuk
-                  key: DB_PASS
-            - name: DB_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: secretpesbuk
-                  key: DB_HOST
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: secretpesbuk
-                  key: DB_NAME                                    
+        - containerPort: 80                                    
 ---
 apiVersion: v1
 kind: Service
