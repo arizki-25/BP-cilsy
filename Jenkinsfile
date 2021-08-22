@@ -4,7 +4,7 @@ pipeline {
         stage ('build pesbuk') {
             steps {
                 sh '''
-                    sudo docker build -t arizki/pesbuk:$GIT_BRANCH-$BUILD_ID -f pesbuk/Dockerfile.pesbuk .
+                    sudo docker build -t arizki/pesbuk:$GIT_BRANCH-$BUILD_ID -f pesbuk/Dockerfile .
                     sudo docker login -u arizki -p$DOCKER_TOKEN
                     sudo docker push arizki/pesbuk:$GIT_BRANCH-$BUILD_ID
                 '''
@@ -13,8 +13,8 @@ pipeline {
         stage ('change manifest file and send') {
             steps {
                 sh '''
-                    sed -i -e "s/branch/$GIT_BRANCH/" kube/pesbuk-deployment.yml
-                    sed -i -e "s/appversion/$BUILD_ID/" pesbuk/pesbuk-deployment.yml
+                    sed -i -e "s/branch/$GIT_BRANCH/" kube/pesbuk/pesbuk-deployment.yml
+                    sed -i -e "s/appversion/$BUILD_ID/" pesbuk/pesbuk/pesbuk-deployment.yml
                     tar -czvf manifest.tar.gz kube/*
                 '''
                 sshPublisher(
