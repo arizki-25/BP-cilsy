@@ -12,6 +12,7 @@ pipeline {
         }
     }
 }
+
 stage ('change manifest file and send') {
     steps {
         sh '''
@@ -24,11 +25,23 @@ stage ('change manifest file and send') {
             failOnError: true,
             publishers: [
                 sshPublisherDesc(
-                    configName: "k8s-master",
+                    configName: "kube-master",
                     transfers: [sshTransfer(sourceFiles: 'manifest.tar.gz', remoteDirectory: 'jenkins/')],
                     verbose: true
                 )
             ]
         )
+    }
+}
+stage ('deploy to kube cluster') {
+            steps {
+                sshagent(credentials : ['kube-master-arizki']){
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.jenkins.sdcilsy-alpha.my.id tar -xvzf jenkins/manifest.tar.gz'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.jenkins.sdcilsy-alpha.my.id kubectl apply -f ./kube/namespace/'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.jenkins.sdcilsy-alpha.my.id kubectl apply -f ./kube/pesbuk/'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.jenkins.sdcilsy-alpha.my.id kubectl apply -f ./kube/ingress/'
+                }
+            }
+        }
     }
 }
