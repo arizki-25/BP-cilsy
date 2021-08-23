@@ -10,7 +10,7 @@ pipeline {
                 '''
             }
         }
-        stage ('build pesbuk') {
+        stage ('build landing-page') {
             steps {
                 sh '''
                     sudo docker build -t arizki/landingpage:$GIT_BRANCH-$BUILD_ID -f landing-page/Dockerfile .
