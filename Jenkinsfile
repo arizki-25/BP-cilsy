@@ -24,8 +24,8 @@ pipeline {
                 sh '''
                     sed -i -e "s/branch/$GIT_BRANCH/" kube/pesbuk/pesbuk-deployment.yml
                     sed -i -e "s/appversion/$BUILD_ID/" kube/pesbuk/pesbuk-deployment.yml
-                    sed -i -e "s/branch/$GIT_BRANCH/" kube/landing-page/landing-page.yml
-                    sed -i -e "s/appversion/$BUILD_ID/" kube/landing-page/landing-page.yml
+                    sed -i -e "s/branch/$GIT_BRANCH/" kube/landingpage/landing-page.yml
+                    sed -i -e "s/appversion/$BUILD_ID/" kube/landingpage/landing-page.yml
                     tar -czvf manifest.tar.gz kube/*
                 '''
                 sshPublisher(
