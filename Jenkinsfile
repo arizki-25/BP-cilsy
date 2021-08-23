@@ -10,11 +10,22 @@ pipeline {
                 '''
             }
         }
+        stage ('build pesbuk') {
+            steps {
+                sh '''
+                    sudo docker build -t arizki/landingpage:$GIT_BRANCH-$BUILD_ID -f landing-page/Dockerfile .
+                    sudo docker login -u arizki -p$DOCKER_TOKEN
+                    sudo docker push arizki/landingpage:$GIT_BRANCH-$BUILD_ID
+                '''
+            }
+        }
         stage ('change manifest file and send') {
             steps {
                 sh '''
                     sed -i -e "s/branch/$GIT_BRANCH/" kube/pesbuk/pesbuk-deployment.yml
                     sed -i -e "s/appversion/$BUILD_ID/" kube/pesbuk/pesbuk-deployment.yml
+                    sed -i -e "s/branch/$GIT_BRANCH/" kube/landing-page/landing-page.yml
+                    sed -i -e "s/appversion/$BUILD_ID/" kube/landing-page/landing-page.yml
                     tar -czvf manifest.tar.gz kube/*
                 '''
                 sshPublisher(
@@ -36,6 +47,7 @@ pipeline {
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id tar -xvzf jenkins/manifest.tar.gz'
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f ./kube/namespace/'
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f ./kube/pesbuk/'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f ./kube/landingpage/'
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f ./kube/ingress/'
                 }
             }
