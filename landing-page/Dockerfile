@@ -9,7 +9,7 @@ RUN echo "\nclear_env = no" >> /etc/php/7.2/fpm/pool.d/www.conf
 COPY . /var/www/html/
 # Nginx config
 RUN rm /etc/nginx/sites-enabled/default
-ADD ./landing-page.conf /etc/nginx/sites-available/
+COPY landing-page/landing-page.conf /etc/nginx/sites-available/
 RUN ln -s /etc/nginx/sites-available/landing-page.conf /etc/nginx/sites-enabled/landing-page.conf
 # Expose ports.
 EXPOSE 80
