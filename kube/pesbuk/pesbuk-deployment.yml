@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: pesbuk
-    namespace: production
+  namespace: production
 spec:
   replicas: 1
   selector:
