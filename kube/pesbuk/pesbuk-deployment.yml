@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: pesbuk
-        image: arizki/pesbuk:1.0
+        image: arizki/pesbuk:main-74
         ports:
           - containerPort: 80
         env:
