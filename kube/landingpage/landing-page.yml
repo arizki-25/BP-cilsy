@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: landing-page
-  namespace: staging
+  namespace: stagingggggg
 spec:
   replicas: 1
   selector:
