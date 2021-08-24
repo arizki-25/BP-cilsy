@@ -20,27 +20,6 @@ spec:
         image: arizki/sosmed:branch-appversion
         ports:
           - containerPort: 80
-        env:
-          - name: DB_USER
-            valueFrom:
-              secretKeyRef:
-                name: secretpesbuk
-                key: DB_USER
-          - name: DB_PASS
-            valueFrom:
-              secretKeyRef:
-                name: secretpesbuk
-                key: DB_PASS
-          - name: DB_HOST
-            valueFrom:
-              secretKeyRef:
-                name: secretpesbuk
-                key: DB_HOST
-          - name: DB_NAME
-            valueFrom:
-              secretKeyRef:
-                name: secretpesbuk
-                key: DB_NAME
 ---
 apiVersion: v1
 kind: Service
