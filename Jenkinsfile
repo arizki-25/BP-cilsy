@@ -45,7 +45,7 @@ pipeline {
             steps {
                 sshagent(credentials : ['kube-master-arizki']){
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id tar -xvzf jenkins/manifest.tar.gz'
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/'
                 }
             }
         }
