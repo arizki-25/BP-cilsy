@@ -47,6 +47,7 @@ pipeline {
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id tar -xvzf jenkins/manifest.tar.gz'
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/namespace'
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/landingpage'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/pesbuk'
                 }
             }
         }
