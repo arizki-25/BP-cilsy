@@ -2,7 +2,7 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: pesbuk-ingress
-  namespace: production
+  namespace: staging
   annotations:
     ## Untuk menaikan batas upload file
     nginx.org/client-max-body-size: "10m"
@@ -10,7 +10,7 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
   rules:
-  - host: pesbuk.sdcilsy-alpha.my.id
+  - host: st-pesbuk.sdcilsy-alpha.my.id
     http:
       paths:
       #- path: /belajar
