@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: wordpress
-        image: arizki/wordpress:1.2
+        image: arizki/wordpress:branch-appversion
         ports:
         - containerPort: 80
         env:
