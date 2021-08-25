@@ -31,12 +31,12 @@ pipeline {
         stage ('change manifest file and send') {
             steps {
                 sh '''
-                    sed -i -e "s/branch/$GIT_BRANCH/" kube/pesbuk/pesbuk-deployment.yml
-                    sed -i -e "s/appversion/$BUILD_ID/" kube/pesbuk/pesbuk-deployment.yml
-                    sed -i -e "s/branch/$GIT_BRANCH/" kube/landingpage/landing-page.yml
-                    sed -i -e "s/appversion/$BUILD_ID/" kube/landingpage/landing-page.yml
-                    sed -i -e "s/branch/$GIT_BRANCH/" kube/wordpress/wordpress-deployment.yml
-                    sed -i -e "s/appversion/$BUILD_ID/" kube/wordpress/wordpress-deployment.yml
+                    sed -i -e "s/branch/$GIT_BRANCH/" kube/production/pesbuk/pesbuk-deployment.yml
+                    sed -i -e "s/appversion/$BUILD_ID/" kube/production/pesbuk/pesbuk-deployment.yml
+                    sed -i -e "s/branch/$GIT_BRANCH/" kube/production/landingpage/landing-page.yml
+                    sed -i -e "s/appversion/$BUILD_ID/" kube/production/landingpage/landing-page.yml
+                    sed -i -e "s/branch/$GIT_BRANCH/" kube/production/wordpress/wordpress-deployment.yml
+                    sed -i -e "s/appversion/$BUILD_ID/" kube/production/wordpress/wordpress-deployment.yml
                     tar -czvf manifest.tar.gz kube/*
                 '''
                 sshPublisher(
@@ -56,10 +56,10 @@ pipeline {
             steps {
                 sshagent(credentials : ['kube-master-arizki']){
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id tar -xvzf jenkins/manifest.tar.gz'
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/namespace'
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/landingpage'
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/pesbuk'
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/wordpress'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/production/namespace'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/production/landingpage'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/production/pesbuk'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/production/wordpress'
                 }
             }
         }
