@@ -76,7 +76,7 @@ pipeline {
                         failOnError: true,
                         publishers: [
                             sshPublisherDesc(
-                                configName: "k8s-master",
+                                configName: "kube-master",
                                 transfers: [sshTransfer(sourceFiles: 'manifest.tar.gz', remoteDirectory: 'jenkins/')],
                                 verbose: true
                             )
@@ -113,10 +113,10 @@ pipeline {
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/staging/landingpage'
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/staging/pesbuk'
                         sh 'ssh -o StrictHostKeyChecking=no ubuntu@api.k8s.sdcilsy-alpha.my.id kubectl apply -f kube/staging/wordpress'
+                        }
                     }
                 }
             }
-        }
-    } 
-}
+        } 
+    }
 }
