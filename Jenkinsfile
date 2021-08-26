@@ -29,33 +29,34 @@ pipeline {
             }
         }
         stage ('change manifest file and send') {
-            stage ('for production') {
-                when {
-                    branch 'main'
+            parallel {
+                stage ('for production') {
+                    when {
+                        branch 'main'
+                    }
+                    steps {
+                        sh '''
+                            sed -i -e "s/branch/$GIT_BRANCH/" kube/production/pesbuk/pesbuk-deployment.yml
+                            sed -i -e "s/appversion/$BUILD_ID/" kube/production/pesbuk/pesbuk-deployment.yml
+                            sed -i -e "s/branch/$GIT_BRANCH/" kube/production/landingpage/landing-page.yml
+                            sed -i -e "s/appversion/$BUILD_ID/" kube/production/landingpage/landing-page.yml
+                            sed -i -e "s/branch/$GIT_BRANCH/" kube/production/wordpress/wordpress-deployment.yml
+                            sed -i -e "s/appversion/$BUILD_ID/" kube/production/wordpress/wordpress-deployment.yml
+                            tar -czvf manifest.tar.gz kube/*
+                        '''
+                        sshPublisher(
+                            continueOnError: false, 
+                            failOnError: true,
+                            publishers: [
+                                sshPublisherDesc(
+                                    configName: "kube-master",
+                                    transfers: [sshTransfer(sourceFiles: 'manifest.tar.gz', remoteDirectory: 'jenkins/')],
+                                    verbose: true
+                                )
+                            ]
+                        )
+                    }
                 }
-                steps {
-                    sh '''
-                        sed -i -e "s/branch/$GIT_BRANCH/" kube/production/pesbuk/pesbuk-deployment.yml
-                        sed -i -e "s/appversion/$BUILD_ID/" kube/production/pesbuk/pesbuk-deployment.yml
-                        sed -i -e "s/branch/$GIT_BRANCH/" kube/production/landingpage/landing-page.yml
-                        sed -i -e "s/appversion/$BUILD_ID/" kube/production/landingpage/landing-page.yml
-                        sed -i -e "s/branch/$GIT_BRANCH/" kube/production/wordpress/wordpress-deployment.yml
-                        sed -i -e "s/appversion/$BUILD_ID/" kube/production/wordpress/wordpress-deployment.yml
-                        tar -czvf manifest.tar.gz kube/*
-                    '''
-                    sshPublisher(
-                        continueOnError: false, 
-                        failOnError: true,
-                        publishers: [
-                            sshPublisherDesc(
-                                configName: "kube-master",
-                                transfers: [sshTransfer(sourceFiles: 'manifest.tar.gz', remoteDirectory: 'jenkins/')],
-                                verbose: true
-                            )
-                        ]
-                    )
-                }
-            }
             stage ('for staging') {
                 when {
                     branch 'staging'
@@ -84,7 +85,9 @@ pipeline {
                 }
             }
         }
-        stage ('deploy to kube cluster') {
+    }    
+    stage ('deploy to kube cluster') {
+        parallel {
             stage ('for production') {
                 when {
                     branch 'main'
