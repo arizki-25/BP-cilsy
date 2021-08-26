@@ -99,7 +99,7 @@ pipeline {
                     }
                 }
             }
-           stage ('for staging') {
+            stage ('for staging') {
                 when {
                     branch 'staging'
                 }
