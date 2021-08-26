@@ -39,9 +39,9 @@ pipeline {
                         sed -i -e "s/appversion/$BUILD_ID/" kube/production/pesbuk/pesbuk-deployment.yml
                         sed -i -e "s/branch/$GIT_BRANCH/" kube/production/landingpage/landing-page.yml
                         sed -i -e "s/appversion/$BUILD_ID/" kube/production/landingpage/landing-page.yml
-                        sed -i -e "s/branch/$GIT_BRANCH/" kube//production/wordpress/wordpress-deployment.yml
+                        sed -i -e "s/branch/$GIT_BRANCH/" kube/production/wordpress/wordpress-deployment.yml
                         sed -i -e "s/appversion/$BUILD_ID/" kube/production/wordpress/wordpress-deployment.yml
-                        tar -czvf manifest-production.tar.gz kube/production/ kube/ingress/
+                        tar -czvf manifest.tar.gz kube/*
                     '''
                     sshPublisher(
                         continueOnError: false, 
@@ -49,7 +49,7 @@ pipeline {
                         publishers: [
                             sshPublisherDesc(
                                 configName: "kube-master",
-                                transfers: [sshTransfer(sourceFiles: 'manifest-production.tar.gz', remoteDirectory: 'jenkins/')],
+                                transfers: [sshTransfer(sourceFiles: 'manifest.tar.gz', remoteDirectory: 'jenkins/')],
                                 verbose: true
                             )
                         ]
@@ -66,9 +66,9 @@ pipeline {
                         sed -i -e "s/appversion/$BUILD_ID/" kube/staging/pesbuk/pesbuk-deployment.yml
                         sed -i -e "s/branch/$GIT_BRANCH/" kube/staging/landingpage/landing-page.yml
                         sed -i -e "s/appversion/$BUILD_ID/" kube/staging/landingpage/landing-page.yml
-                        sed -i -e "s/branch/$GIT_BRANCH/" kube//staging/wordpress/wordpress-deployment.yml
+                        sed -i -e "s/branch/$GIT_BRANCH/" kube/staging/wordpress/wordpress-deployment.yml
                         sed -i -e "s/appversion/$BUILD_ID/" kube/staging/wordpress/wordpress-deployment.yml
-                        tar -czvf manifest-staging.tar.gz kube/staging/ kube/ingress/
+                        tar -czvf manifest.tar.gz kube/*
                     '''
                     sshPublisher(
                         continueOnError: false, 
@@ -76,7 +76,7 @@ pipeline {
                         publishers: [
                             sshPublisherDesc(
                                 configName: "k8s-master",
-                                transfers: [sshTransfer(sourceFiles: 'manifest-staging.tar.gz', remoteDirectory: 'jenkins/')],
+                                transfers: [sshTransfer(sourceFiles: 'manifest.tar.gz', remoteDirectory: 'jenkins/')],
                                 verbose: true
                             )
                         ]
