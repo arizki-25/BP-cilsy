@@ -6,6 +6,7 @@ RUN sed -i -e "s/;\?daemonize\s*=\s*yes/daemonize = no/g" /etc/php/7.2/fpm/php-f
 RUN echo "\nclear_env = no" >> /etc/php/7.2/fpm/pool.d/www.conf
 #COPY FILE
 COPY pesbuk/ /var/www/html/
+COPY pesbuk/php.ini /etc/php/7.2/fpm/php.ini
 # Nginx config
 RUN rm /etc/nginx/sites-enabled/default
 COPY pesbuk/pesbuk.conf /etc/nginx/sites-available/
