@@ -6,6 +6,7 @@ RUN sed -i -e "s/;\?daemonize\s*=\s*yes/daemonize = no/g" /etc/php/7.2/fpm/php-f
 RUN echo "\nclear_env = no" >> /etc/php/7.2/fpm/pool.d/www.conf
 #COPY FILE
 COPY wordpress/ /var/www/html/
+COPY wordpress/php.ini /etc/php/7.2/fpm/php.ini
 # Nginx config
 RUN rm /etc/nginx/sites-enabled/default
 COPY wordpress/wordpress.conf /etc/nginx/sites-available/
